@@ -1,13 +1,19 @@
 package com.veterinaria.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.veterinaria.service.CitaService;
+import com.veterinaria.service.MascotaService;
 import com.veterinaria.service.VeterinarioService;
 import com.veterinaria.entity.Cita;
+import com.veterinaria.entity.Mascota;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import com.veterinaria.entity.Veterinario;
@@ -17,12 +23,14 @@ public class WebController {
 
     private final VeterinarioService veterinarioService;
     private final CitaService citaService;
+    private final MascotaService mascotaService;
 
     public WebController(VeterinarioService veterinarioService,
-                         CitaService citaService) {
+                         CitaService citaService, MascotaService mascotaService) {
 
         this.veterinarioService = veterinarioService;
         this.citaService = citaService;
+        this.mascotaService = mascotaService;
     }
 
     @GetMapping("/vista/veterinarios")
@@ -161,5 +169,58 @@ public class WebController {
         veterinarioService.eliminar(id);
 
         return "redirect:/vista/veterinarios";
+    }
+    
+ // FORMULARIO MASCOTA
+    @GetMapping("/vista/mascotas")
+    public String listarMascotas(@RequestParam(required=false, defaultValue="") String buscar, Model model) {
+        List<Mascota> lista = new ArrayList<Mascota>();
+        if (buscar.isEmpty()) {
+            lista = mascotaService.listar();
+        } else {
+            try {
+                Integer id = Integer.parseInt(buscar);
+                Mascota m = mascotaService.buscar(id);
+                if (m != null) {
+                    lista.add(m); 
+                }
+            } catch (NumberFormatException e) {
+                // devolverá la lista vacía.
+            }
+        }
+        model.addAttribute("listaMascotas", lista);
+        return "mascotas"; // Asegúrate de que el HTML se llame exactamente mascotas.html
+    }
+    
+    // FORMULARIO NUEVA MASCOTA
+    @GetMapping("/vista/nueva-mascota")
+    public String nuevaMascota(Model model) {
+        model.addAttribute("mascota", new Mascota());
+        return "nueva-mascota";
+    }
+
+    // GUARDAR O ACTUALIZAR MASCOTA
+    @PostMapping("/guardar-mascota")
+    public String guardarMascota(Mascota mascota) {
+        if (mascota.getIdMascota() == 0) {
+            mascotaService.registrar(mascota);
+        } else {
+            mascotaService.actualizar(mascota);
+        }
+        return "redirect:/vista/mascotas";
+    }
+
+    // FORMULARIO EDITAR MASCOTA
+    @GetMapping("/vista/editar-mascota/{id}")
+    public String editarMascota(@PathVariable Integer id, Model model) {
+        model.addAttribute("mascota", mascotaService.buscar(id));
+        return "nueva-mascota"; 
+    }
+
+    // ELIMINAR MASCOTA
+    @GetMapping("/vista/eliminar-mascota/{id}")
+    public String eliminarMascota(@PathVariable Integer id) {
+        mascotaService.eliminar(id);
+        return "redirect:/vista/mascotas";
     }
 }
