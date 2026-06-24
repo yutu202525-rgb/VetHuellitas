@@ -39,5 +39,4 @@ public class ClienteController {
     public Cliente buscar(@PathVariable Integer id){
         return service.buscar(id);
     }
-
 }

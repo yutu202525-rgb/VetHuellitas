@@ -45,3 +45,55 @@ GET http://localhost:8080/veterinarios
 
 ### Listar Citas
 GET http://localhost:8080/citas
+
+### Registrar Propietario 1
+POST http://localhost:8080/clientes
+Content-Type: application/json
+
+{
+    "nombres":"Luis",
+    "apellidos":"Fernandez",
+    "dni":"72111111",
+    "correo":"luis@gmail.com",
+    "telefono":"987654321",
+    "estado":"ACTIVO"
+}
+
+### Registrar Propietario 2
+POST http://localhost:8080/clientes
+Content-Type: application/json
+
+{
+    "nombres":"Rosa",
+    "apellidos":"Garcia",
+    "dni":"72222222",
+    "correo":"rosa@gmail.com",
+    "telefono":"987654322",
+    "estado":"ACTIVO"
+}
+
+### Listar Propietarios (JSON)
+GET http://localhost:8080/clientes
+
+### Buscar Propietario por ID
+GET http://localhost:8080/clientes/1
+
+### Actualizar Propietario
+PUT http://localhost:8080/clientes
+Content-Type: application/json
+
+{
+    "idCliente": 1,
+    "nombres":"Luis Alberto",
+    "apellidos":"Fernandez",
+    "dni":"72111111",
+    "correo":"luis@gmail.com",
+    "telefono":"987654321",
+    "estado":"ACTIVO"
+}
+
+### Eliminar Propietario
+DELETE http://localhost:8080/clientes/1
+
+### Listar Propietarios (Vista HTML)
+GET http://localhost:8080/vista-propietarios

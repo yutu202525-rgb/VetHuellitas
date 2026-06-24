@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Listado de Propietarios</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<style>
+	body {
+		background-color: #f4f6f9;
+	}
+	.icono-modulo {
+		width: 48px;
+		height: 48px;
+		background-color: #e6f4ea;
+		border-radius: 10px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.icono-modulo i {
+		font-size: 1.6rem;
+		color: #198754;
+	}
+	.badge-estado {
+		font-weight: 500;
+		padding: 0.4em 0.9em;
+		border-radius: 50px;
+	}
+	.bg-success.badge-estado {
+		background-color: #d1f4dd !important;
+		color: #18794e !important;
+	}
+	.bg-secondary.badge-estado {
+		background-color: #e9ecef !important;
+		color: #6c757d !important;
+	}
+	.btn-editar {
+		background-color: #e8f0fe;
+		color: #1a56db;
+		border: none;
+		font-weight: 500;
+	}
+	.btn-editar:hover {
+		background-color: #d3e3fd;
+		color: #1a56db;
+	}
+	.btn-eliminar {
+		background-color: #fde8e8;
+		color: #c81e1e;
+		border: none;
+		font-weight: 500;
+	}
+	.btn-eliminar:hover {
+		background-color: #fbd5d5;
+		color: #c81e1e;
+	}
+
+	#modalEditar .modal-content {
+		border: none;
+		border-radius: 12px;
+		box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+	}
+	#modalEditar .modal-header {
+		border-bottom: 1px solid #eef0f2;
+		padding: 1.25rem 1.5rem 1rem;
+	}
+	#modalEditar .modal-title {
+		font-weight: 600;
+		font-size: 1.1rem;
+		color: #1a1d21;
+	}
+	#modalEditar .btn-close {
+		opacity: 0.4;
+	}
+	#modalEditar .modal-body {
+		padding: 1.5rem;
+	}
+	#modalEditar .row {
+		--bs-gutter-y: 1.25rem;
+	}
+	#modalEditar .form-label {
+		font-weight: 500;
+		font-size: 0.88rem;
+		color: #4a4f55;
+		margin-bottom: 0.4rem;
+	}
+	#modalEditar .form-control,
+	#modalEditar .form-select {
+		border-radius: 7px;
+		border: 1px solid #e3e5e8;
+		padding: 0.6rem 0.85rem;
+		font-size: 0.92rem;
+		color: #1a1d21;
+		box-shadow: none;
+		background-color: #fff;
+	}
+	#modalEditar .form-control::placeholder {
+		color: #adb1b6;
+	}
+	#modalEditar .form-control:disabled {
+		background-color: #f7f8f9;
+		color: #b0b4b9;
+	}
+	#modalEditar .form-control:focus,
+	#modalEditar .form-select:focus {
+		border-color: #9bd6b3;
+		box-shadow: 0 0 0 3px rgba(25, 135, 84, 0.1);
+	}
+	#modalEditar .modal-footer {
+		border-top: 1px solid #eef0f2;
+		padding: 1.1rem 1.5rem;
+		gap: 0.6rem;
+	}
+	#modalEditar .btn-secondary {
+		background-color: #fff;
+		border: 1px solid #e3e5e8;
+		color: #4a4f55;
+		font-weight: 500;
+		border-radius: 7px;
+		padding: 0.5rem 1.1rem;
+	}
+	#modalEditar .btn-secondary:hover {
+		background-color: #f7f8f9;
+	}
+	#modalEditar #btnGuardarEdicion {
+		font-weight: 600;
+		padding: 0.5rem 1.3rem;
+		border-radius: 7px;
+		box-shadow: none;
+	}
+</style>
+
+</head>
+<body>
+
+<div class="container-fluid mt-4 mb-4">
+
+	<div class="d-flex justify-content-between align-items-center mb-4">
+
+		<div class="d-flex align-items-center">
+			<div class="icono-modulo me-3">
+				<i class="bi bi-people-fill"></i>
+			</div>
+			<div>
+				<h4 class="mb-0">Módulo de Propietarios</h4>
+				<small class="text-muted"
+					th:text="${#lists.size(codigo)} + ' propietarios registrados'">
+				</small>
+			</div>
+		</div>
+
+		<div>
+			<button type="button" class="btn btn-success" id="btnAbrirNuevo"
+				data-bs-toggle="modal" data-bs-target="#modalEditar">
+				<i class="bi bi-plus-circle"></i>
+				Nuevo Propietario
+			</button>
+		</div>
+
+	</div>
+
+	<div class="alert alert-info" th:if="${mensaje != null}">
+		<span th:text="${mensaje}"></span>
+	</div>
+
+	<div class="card shadow-sm">
+
+		<div class="card-body">
+
+			<div class="mb-3">
+				<div class="input-group">
+					<span class="input-group-text bg-white">
+						<i class="bi bi-search"></i>
+					</span>
+					<input type="text" id="buscarPropietario" class="form-control"
+						placeholder="Buscar...">
+				</div>
+			</div>
+
+			<div class="table-responsive">
+
+				<table class="table table-hover align-middle mb-0">
+
+					<thead>
+						<tr class="text-muted small text-uppercase">
+							<th>Código</th>
+							<th>Nombres</th>
+							<th>Apellidos</th>
+							<th>DNI</th>
+							<th>Correo Electrónico</th>
+							<th>Teléfono</th>
+							<th>Estado</th>
+							<th class="text-end">Acciones</th>
+						</tr>
+					</thead>
+
+					<tbody>
+
+						<tr th:each="p : ${codigo}">
+
+							<td class="fw-semibold text-primary"
+								th:text="${p.idCliente}">
+							</td>
+
+							<td th:text="${p.nombres}"></td>
+
+							<td th:text="${p.apellidos}"></td>
+
+							<td th:text="${p.dni}"></td>
+
+							<td th:text="${p.correo}"></td>
+
+							<td th:text="${p.telefono}"></td>
+
+							<td>
+								<span class="badge badge-estado bg-success"
+									th:if="${p.estado == 'ACTIVO'}"
+									th:text="${p.estado}">
+								</span>
+								<span class="badge badge-estado bg-secondary"
+									th:unless="${p.estado == 'ACTIVO'}"
+									th:text="${p.estado}">
+								</span>
+							</td>
+
+							<td class="text-end">
+								<button class="btn btn-editar btn-sm btn-abrir-editar"
+									th:attr="data-id=${p.idCliente},
+									         data-nombres=${p.nombres},
+									         data-apellidos=${p.apellidos},
+									         data-dni=${p.dni},
+									         data-correo=${p.correo},
+									         data-telefono=${p.telefono},
+									         data-direccion=${p.direccion},
+									         data-estado=${p.estado}">
+									<i class="bi bi-pencil-square"></i>
+									Editar
+								</button>
+								<button class="btn btn-eliminar btn-sm btn-abrir-eliminar"
+									th:attr="data-id=${p.idCliente},
+									         data-nombre=${p.nombres + ' ' + p.apellidos}">
+									<i class="bi bi-trash"></i>
+									Eliminar
+								</button>
+							</td>
+
+						</tr>
+
+						<tr th:if="${#lists.isEmpty(codigo)}">
+							<td colspan="8" class="text-center text-muted py-4">
+								No hay propietarios registrados.
+							</td>
+						</tr>
+
+					</tbody>
+
+				</table>
+
+			</div>
+
+		</div>
+	</div>
+
+</div>
+
+<div class="modal fade" id="modalEditar" tabindex="-1">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<h5 class="modal-title" id="tituloModalEditar">Editar Propietario</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+			</div>
+
+			<div class="modal-body">
+
+				<form id="formEditar">
+
+					<input type="hidden" id="editIdCliente">
+
+					<div class="row">
+
+						<div class="col-md-4">
+							<label class="form-label">Código</label>
+							<input type="text" id="editCodigo" class="form-control" placeholder="Se asigna automáticamente" disabled>
+						</div>
+
+						<div class="col-md-4">
+							<label class="form-label">Nombres *</label>
+							<input type="text" id="editNombres" class="form-control" placeholder="Nombres" required>
+						</div>
+
+						<div class="col-md-4">
+							<label class="form-label">Apellidos *</label>
+							<input type="text" id="editApellidos" class="form-control" placeholder="Apellidos" required>
+						</div>
+
+						<div class="col-md-6">
+							<label class="form-label">DNI *</label>
+							<input type="text" id="editDni" class="form-control" placeholder="Número de DNI" required>
+						</div>
+
+						<div class="col-md-6">
+							<label class="form-label">Teléfono</label>
+							<input type="text" id="editTelefono" class="form-control" placeholder="Número de teléfono">
+						</div>
+
+						<div class="col-md-12">
+							<label class="form-label">Correo Electrónico</label>
+							<input type="email" id="editCorreo" class="form-control" placeholder="correo@ejemplo.com">
+						</div>
+
+						<div class="col-md-12">
+							<label class="form-label">Dirección</label>
+							<input type="text" id="editDireccion" class="form-control" placeholder="Dirección completa">
+						</div>
+
+						<div class="col-md-6">
+							<label class="form-label">Estado</label>
+							<select id="editEstado" class="form-select">
+								<option value="ACTIVO">Activo</option>
+								<option value="INACTIVO">Inactivo</option>
+							</select>
+						</div>
+
+					</div>
+
+				</form>
+
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+					Cancelar
+				</button>
+				<button type="button" class="btn btn-success" id="btnGuardarEdicion">
+					Guardar Cambios
+				</button>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="modalEliminar" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<h5 class="modal-title">Confirmar Eliminación</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+			</div>
+
+			<div class="modal-body">
+				<p>
+					¿Está seguro que desea eliminar al propietario
+					<strong id="nombreAEliminar"></strong>?
+				</p>
+				<p class="text-muted small mb-0">
+					Esta acción no se puede deshacer.
+				</p>
+				<input type="hidden" id="deleteIdCliente">
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+					Cancelar
+				</button>
+				<button type="button" class="btn btn-danger" id="btnConfirmarEliminar">
+					<i class="bi bi-trash"></i>
+					Eliminar
+				</button>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script>
+	$(document).ready(function() {
+
+		$('#buscarPropietario').on('keyup', function() {
+			var valor = $(this).val().toLowerCase();
+			$('table tbody tr').filter(function() {
+				$(this).toggle($(this).text().toLowerCase().indexOf(valor) > -1);
+			});
+		});
+
+		var modalEditar = new bootstrap.Modal(document.getElementById('modalEditar'));
+		var modalEliminar = new bootstrap.Modal(document.getElementById('modalEliminar'));
+		var modoFormulario = 'nuevo';
+
+		function limpiarFormulario() {
+			$('#formEditar')[0].reset();
+			$('#editIdCliente').val('');
+			$('#editCodigo').val('');
+			$('#editCodigo').attr('placeholder', 'Se asigna automáticamente');
+			$('#editEstado').val('ACTIVO');
+		}
+
+		$('#btnAbrirNuevo').on('click', function() {
+			modoFormulario = 'nuevo';
+			limpiarFormulario();
+			$('#tituloModalEditar').text('Registrar Propietario');
+			$('#btnGuardarEdicion').text('Registrar');
+		});
+
+		$(document).on('click', '.btn-abrir-editar', function() {
+
+			var btn = $(this);
+			modoFormulario = 'editar';
+
+			$('#tituloModalEditar').text('Editar Propietario');
+			$('#btnGuardarEdicion').text('Guardar Cambios');
+
+			$('#editIdCliente').val(btn.data('id'));
+			$('#editCodigo').val(btn.data('id'));
+			$('#editNombres').val(btn.data('nombres'));
+			$('#editApellidos').val(btn.data('apellidos'));
+			$('#editDni').val(btn.data('dni'));
+			$('#editTelefono').val(btn.data('telefono'));
+			$('#editCorreo').val(btn.data('correo'));
+			$('#editDireccion').val(btn.data('direccion'));
+			$('#editEstado').val(btn.data('estado'));
+
+			modalEditar.show();
+		});
+
+		$('#btnGuardarEdicion').on('click', function() {
+
+			if (!$('#editNombres').val() || !$('#editApellidos').val() || !$('#editDni').val()) {
+				alert('Por favor complete los campos obligatorios (Nombres, Apellidos, DNI).');
+				return;
+			}
+
+			var cliente = {
+				nombres: $('#editNombres').val(),
+				apellidos: $('#editApellidos').val(),
+				dni: $('#editDni').val(),
+				telefono: $('#editTelefono').val(),
+				correo: $('#editCorreo').val(),
+				direccion: $('#editDireccion').val(),
+				estado: $('#editEstado').val()
+			};
+
+			var metodo, url;
+
+			if (modoFormulario === 'editar') {
+				cliente.idCliente = parseInt($('#editIdCliente').val());
+				metodo = 'PUT';
+				url = '/clientes';
+			} else {
+				metodo = 'POST';
+				url = '/clientes';
+			}
+
+			$.ajax({
+				url: url,
+				type: metodo,
+				contentType: 'application/json',
+				data: JSON.stringify(cliente),
+				success: function() {
+					modalEditar.hide();
+					location.reload();
+				},
+				error: function() {
+					alert('Ocurrió un error al guardar los datos.');
+				}
+			});
+		});
+
+		$(document).on('click', '.btn-abrir-eliminar', function() {
+
+			var btn = $(this);
+
+			$('#deleteIdCliente').val(btn.data('id'));
+			$('#nombreAEliminar').text(btn.data('nombre'));
+
+			modalEliminar.show();
+		});
+
+		$('#btnConfirmarEliminar').on('click', function() {
+
+			var id = $('#deleteIdCliente').val();
+
+			$.ajax({
+				url: '/clientes/' + id,
+				type: 'DELETE',
+				success: function() {
+					modalEliminar.hide();
+					location.reload();
+				},
+				error: function() {
+					alert('Ocurrió un error al eliminar el propietario.');
+				}
+			});
+		});
+
+	});
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

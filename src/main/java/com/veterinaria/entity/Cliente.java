@@ -31,7 +31,12 @@ public class Cliente {
 
 	@Column(name="correo")
 	private String correo;
-
+	
+	@Column(name="estado")
+	private String estado;
+	
+	@Column(name="direccion")
+	private String direccion;
 	
 	public Cliente() {
 		super();
@@ -95,6 +100,26 @@ public class Cliente {
 
 	public void setCorreo(String correo) {
 		this.correo = correo;
+	}
+
+
+	public String getEstado() {
+		return estado;
+	}
+
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+
+	public String getDireccion() {
+		return direccion;
+	}
+
+
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
 	}
 
 }
