@@ -40,4 +40,10 @@ public class VeterinarioServiceImpl implements VeterinarioService{
 	public Veterinario buscar(Integer id) {
 		return repo.findById(id).orElse(null);
 	}
+	
+	@Override
+	public List<Veterinario> buscar(String nombres) {
+	    return repo.findByNombresContainingIgnoreCase(nombres);
+	}
+	
 }

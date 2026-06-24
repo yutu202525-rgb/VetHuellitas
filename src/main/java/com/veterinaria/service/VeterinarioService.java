@@ -14,4 +14,8 @@ public interface VeterinarioService {
 	void eliminar(Integer id);
 
 	Veterinario buscar(Integer id);
+	
+	List<Veterinario> buscar(String nombres);
+	
+	
 }

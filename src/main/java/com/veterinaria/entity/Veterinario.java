@@ -28,6 +28,9 @@ public class Veterinario {
 
 	@Column(name="correo")
 	private String correo;
+	
+	@Column(name="estado")
+	private String estado;
 
 	public Veterinario() {
 		super();
@@ -71,5 +74,13 @@ public class Veterinario {
 
 	public void setCorreo(String correo) {
 		this.correo = correo;
+	}
+	
+	public String getEstado() {
+	    return estado;
+	}
+
+	public void setEstado(String estado) {
+	    this.estado = estado;
 	}
 }

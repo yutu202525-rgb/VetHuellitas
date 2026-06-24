@@ -1,1 +1,47 @@
-DELETE http://localhost:8080/clientes/2
+### Registrar Veterinario 1
+POST http://localhost:8080/veterinarios
+Content-Type: application/json
+
+{
+    "nombres":"Carlos Mendoza",
+    "especialidad":"Cirugía",
+    "telefono":"999111222",
+    "correo":"carlos@gmail.com"
+}
+
+### Registrar Veterinario 2
+POST http://localhost:8080/veterinarios
+Content-Type: application/json
+
+{
+    "nombres":"Ana López",
+    "especialidad":"Dermatología",
+    "telefono":"987654321",
+    "correo":"ana@gmail.com"
+}
+
+### Registrar Cita 1
+POST http://localhost:8080/citas
+Content-Type: application/json
+
+{
+    "fecha":"2026-06-25T10:30:00.000+00:00",
+    "motivo":"Vacunación",
+    "estado":"Pendiente"
+}
+
+### Registrar Cita 2
+POST http://localhost:8080/citas
+Content-Type: application/json
+
+{
+    "fecha":"2026-06-28T15:00:00.000+00:00",
+    "motivo":"Control general",
+    "estado":"Atendida"
+}
+
+### Listar Veterinarios
+GET http://localhost:8080/veterinarios
+
+### Listar Citas
+GET http://localhost:8080/citas
