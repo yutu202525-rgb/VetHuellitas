@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Registrar Nueva Mascota</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+body {
+    background: #eef2f7;
+    font-family: Arial, sans-serif;
+}
+
+.card {
+    margin-top: 40px;
+    padding: 30px;
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,.08);
+    background-color: #ffffff;
+}
+
+.titulo {
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 25px;
+}
+
+/* Diseños de inputs adaptados a la imagen de muestra */
+.form-control, .form-select {
+    border-radius: 10px;
+    height: 45px;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #334155;
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: #ffffff;
+    border-color: #cbd5e1;
+    box-shadow: none;
+}
+
+label {
+    font-weight: 500;
+    color: #475569;
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+.btn-custom-primary {
+    background-color: #2563eb;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 25px;
+    font-weight: 500;
+}
+
+.btn-custom-primary:hover {
+    background-color: #1d4ed8;
+}
+
+.btn-custom-secondary {
+    border-radius: 10px;
+    padding: 10px 25px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container" style="max-width: 800px;">
+    <div class="card">
+        
+        <h3 class="titulo">🐾 Registrar Nueva Mascota</h3>
+
+        <form th:action="@{/guardar-mascota}" method="post" th:object="${mascota}">
+
+            <input type="hidden" th:field="*{idMascota}">
+
+            <div class="row">
+                
+                <div class="col-md-6 mb-3">
+                    <label>Código</label>
+                    <input type="text" class="form-control text-muted" value="M-011" disabled>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label>Nombre *</label>
+                    <input type="text" class="form-control" placeholder="Nombre de la mascota" th:field="*{nombre}" required>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label>Especie *</label>
+                    <select class="form-select" required>
+                        <option value="Canino">Canino</option>
+                        <option value="Felino">Felino</option>
+                        <option value="Ave">Ave</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label>Raza *</label>
+                    <input type="text" class="form-control" placeholder="Raza de la mascota" th:field="*{raza}" required>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label>Edad</label>
+                    <input type="text" class="form-control" placeholder="Ej: 2 años" th:field="*{edad}">
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label>Sexo *</label>
+                    <select class="form-select" th:field="*{sexo}" required>
+                        <option value="Macho">Macho</option>
+                        <option value="Hembra">Hembra</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label>Propietario</label>
+                    <select class="form-select">
+                        <option value="">Seleccionar propietario</option>
+                        </select>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <label>Estado</label>
+                    <select class="form-select">
+                        <option value="Activo">Activo</option>
+                        <option value="Inactivo">Inactivo</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="d-flex justify-content-end gap-2 mt-2">
+                <a href="/vista/mascotas" class="btn btn-outline-secondary btn-custom-secondary">Cancelar</a>
+                <button type="submit" class="btn btn-primary btn-custom-primary">Registrar Mascota</button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+</body>
+</html>
