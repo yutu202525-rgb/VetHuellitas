@@ -2,13 +2,12 @@ package com.veterinaria.serviceImpl;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
-
 import com.veterinaria.entity.Usuario;
 import com.veterinaria.repository.UsuarioRepository;
 import com.veterinaria.service.UsuarioService;
 
 @Service
-public class UsuarioServiceImpl implements UsuarioService{
+public class UsuarioServiceImpl implements UsuarioService {
 
 	private final UsuarioRepository repo;
 
@@ -40,4 +39,11 @@ public class UsuarioServiceImpl implements UsuarioService{
 	public Usuario buscar(Integer id) {
 		return repo.findById(id).orElse(null);
 	}
+
+	// NUEVO: método de autenticación
+	@Override
+	public Usuario login(String usuario, String password) {
+		return repo.findByUsuarioAndPassword(usuario, password);
+	}
+
 }

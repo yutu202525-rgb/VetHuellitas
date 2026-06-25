@@ -3,16 +3,23 @@ package com.veterinaria.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.veterinaria.service.CitaService;
 import com.veterinaria.service.MascotaService;
+import com.veterinaria.service.UsuarioService;
 import com.veterinaria.service.VeterinarioService;
+
+import jakarta.servlet.http.HttpSession;
+
 import com.veterinaria.entity.Cita;
 import com.veterinaria.entity.Mascota;
+import com.veterinaria.entity.Usuario;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,14 +31,38 @@ public class WebController {
     private final VeterinarioService veterinarioService;
     private final CitaService citaService;
     private final MascotaService mascotaService;
+    private final UsuarioService usuarioService;
 
-    public WebController(VeterinarioService veterinarioService,
-                         CitaService citaService, MascotaService mascotaService) {
+    public WebController(VeterinarioService veterinarioService, CitaService citaService, MascotaService mascotaService, UsuarioService usuarioService) {
 
-        this.veterinarioService = veterinarioService;
-        this.citaService = citaService;
-        this.mascotaService = mascotaService;
+		this.veterinarioService = veterinarioService;
+		this.citaService = citaService;
+		this.mascotaService = mascotaService;
+		this.usuarioService = usuarioService;
     }
+    
+
+	@GetMapping("/login")
+	public String mostrarLogin() {
+		return "login";
+	}
+	 
+	@PostMapping("/login")
+	@ResponseBody
+	public ResponseEntity<?> procesarLogin(
+			@RequestParam String usuario,
+			@RequestParam String password,
+			HttpSession session) {
+ 
+	Usuario u = usuarioService.login(usuario, password);
+ 
+	if (u != null) {
+		session.setAttribute("usuarioLogueado", u);
+		return ResponseEntity.ok().build();
+	} else {
+		return ResponseEntity.status(401).body("Usuario o contraseña incorrectos");
+	}
+}
 
     @GetMapping("/vista/veterinarios")
     public String listar(

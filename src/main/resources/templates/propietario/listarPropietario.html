@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title>Listado de Propietarios</title>
 
+<!-- Bootstrap -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
@@ -58,87 +59,258 @@
 		color: #c81e1e;
 	}
 
-	#modalEditar .modal-content {
-		border: none;
-		border-radius: 12px;
-		box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+	.vc-layout {
+		display: flex;
 	}
-	#modalEditar .modal-header {
-		border-bottom: 1px solid #eef0f2;
-		padding: 1.25rem 1.5rem 1rem;
+	.vc-content {
+		flex: 1;
+		min-width: 0;
 	}
-	#modalEditar .modal-title {
+
+	/* ===== SIDEBAR ===== */
+	.vc-sidebar {
+		width: 260px;
+		min-height: 100vh;
+		background-color: #0f1f3d;
+		color: #c7d0e0;
+		display: flex;
+		flex-direction: column;
+		flex-shrink: 0;
+	}
+	.vc-sidebar a {
+		text-decoration: none;
+		color: inherit;
+	}
+	.vc-brand {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		padding: 1.25rem 1.25rem 1.5rem;
+	}
+	.vc-brand-icon {
+		width: 38px;
+		height: 38px;
+		border-radius: 9px;
+		background: linear-gradient(135deg, #4f7cff, #2f5ce0);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-shrink: 0;
+	}
+	.vc-brand-icon i {
+		color: #fff;
+		font-size: 1.05rem;
+	}
+	.vc-brand-text .vc-brand-title {
+		font-weight: 700;
+		font-size: 1rem;
+		color: #fff;
+		line-height: 1.2;
+	}
+	.vc-brand-text .vc-brand-subtitle {
+		font-size: 0.72rem;
+		color: #7da2ff;
+	}
+	.vc-nav {
+		flex: 1;
+		overflow-y: auto;
+		padding: 0.25rem 0.75rem;
+	}
+	.vc-section {
+		margin-bottom: 0.2rem;
+	}
+	.vc-section-toggle {
+		display: flex;
+		align-items: center;
+		gap: 0.65rem;
+		padding: 0.65rem 0.75rem;
+		border-radius: 8px;
 		font-weight: 600;
-		font-size: 1.1rem;
-		color: #1a1d21;
-	}
-	#modalEditar .btn-close {
-		opacity: 0.4;
-	}
-	#modalEditar .modal-body {
-		padding: 1.5rem;
-	}
-	#modalEditar .row {
-		--bs-gutter-y: 1.25rem;
-	}
-	#modalEditar .form-label {
-		font-weight: 500;
 		font-size: 0.88rem;
-		color: #4a4f55;
-		margin-bottom: 0.4rem;
+		color: #e3e8f2;
+		cursor: pointer;
+		user-select: none;
 	}
-	#modalEditar .form-control,
-	#modalEditar .form-select {
+	.vc-section-toggle:hover {
+		background-color: rgba(255,255,255,0.04);
+	}
+	.vc-section-toggle i.vc-icon-main {
+		font-size: 1rem;
+		width: 18px;
+		text-align: center;
+	}
+	.vc-section-toggle .vc-chevron {
+		margin-left: auto;
+		font-size: 0.75rem;
+		transition: transform 0.2s ease;
+		color: #8b96ad;
+	}
+	.vc-section.open .vc-chevron {
+		transform: rotate(180deg);
+	}
+	.vc-subnav {
+		list-style: none;
+		margin: 0;
+		padding: 0.15rem 0 0.4rem 2.55rem;
+		display: none;
+	}
+	.vc-section.open .vc-subnav {
+		display: block;
+	}
+	.vc-subnav li {
+		margin: 0.1rem 0;
+	}
+	.vc-subnav a {
+		display: block;
+		padding: 0.45rem 0.6rem;
 		border-radius: 7px;
-		border: 1px solid #e3e5e8;
-		padding: 0.6rem 0.85rem;
-		font-size: 0.92rem;
-		color: #1a1d21;
-		box-shadow: none;
-		background-color: #fff;
+		font-size: 0.85rem;
+		color: #9aa6bd;
+		position: relative;
 	}
-	#modalEditar .form-control::placeholder {
-		color: #adb1b6;
+	.vc-subnav a:hover {
+		color: #fff;
+		background-color: rgba(255,255,255,0.05);
 	}
-	#modalEditar .form-control:disabled {
-		background-color: #f7f8f9;
-		color: #b0b4b9;
-	}
-	#modalEditar .form-control:focus,
-	#modalEditar .form-select:focus {
-		border-color: #9bd6b3;
-		box-shadow: 0 0 0 3px rgba(25, 135, 84, 0.1);
-	}
-	#modalEditar .modal-footer {
-		border-top: 1px solid #eef0f2;
-		padding: 1.1rem 1.5rem;
-		gap: 0.6rem;
-	}
-	#modalEditar .btn-secondary {
-		background-color: #fff;
-		border: 1px solid #e3e5e8;
-		color: #4a4f55;
-		font-weight: 500;
-		border-radius: 7px;
-		padding: 0.5rem 1.1rem;
-	}
-	#modalEditar .btn-secondary:hover {
-		background-color: #f7f8f9;
-	}
-	#modalEditar #btnGuardarEdicion {
+	.vc-subnav a.activo {
+		color: #fff;
 		font-weight: 600;
-		padding: 0.5rem 1.3rem;
-		border-radius: 7px;
-		box-shadow: none;
+		background-color: #2952d6;
+	}
+	.vc-footer {
+		display: flex;
+		align-items: center;
+		gap: 0.65rem;
+		padding: 1rem 1.1rem;
+		border-top: 1px solid rgba(255,255,255,0.07);
+	}
+	.vc-avatar {
+		width: 34px;
+		height: 34px;
+		border-radius: 50%;
+		background-color: #2952d6;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-shrink: 0;
+	}
+	.vc-avatar i {
+		color: #fff;
+		font-size: 1rem;
+	}
+	.vc-footer-text {
+		flex: 1;
+		min-width: 0;
+	}
+	.vc-footer-name {
+		font-size: 0.83rem;
+		font-weight: 600;
+		color: #fff;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	.vc-footer-role {
+		font-size: 0.74rem;
+		color: #5d8aff;
+	}
+	.vc-footer-exit {
+		color: #8b96ad;
+		font-size: 1rem;
+	}
+	.vc-footer-exit:hover {
+		color: #fff;
 	}
 </style>
 
 </head>
 <body>
 
-<div class="container-fluid mt-4 mb-4">
+<div class="vc-layout">
 
-	<div class="d-flex justify-content-between align-items-center mb-4">
+	<!-- ===== SIDEBAR (incrustado directo, sin fragmento) ===== -->
+	<nav class="vc-sidebar">
+
+		<div class="vc-brand">
+			<div class="vc-brand-icon">
+				<i class="bi bi-suit-heart-fill"></i>
+			</div>
+			<div class="vc-brand-text">
+				<div class="vc-brand-title">Huellitas</div>
+				<div class="vc-brand-subtitle">Gestión Veterinaria</div>
+			</div>
+		</div>
+
+		<div class="vc-nav">
+
+			<div class="vc-section open">
+				<div class="vc-section-toggle">
+					<i class="bi bi-people vc-icon-main"></i>
+					<span>Propietarios</span>
+					<i class="bi bi-chevron-down vc-chevron"></i>
+				</div>
+				<ul class="vc-subnav">
+					<li><a href="/vista/propietarios" class="activo">Listado de Propietarios</a></li>
+				</ul>
+			</div>
+
+			<div class="vc-section">
+				<div class="vc-section-toggle">
+					<i class="bi bi-clipboard2-pulse vc-icon-main"></i>
+					<span>Veterinarios</span>
+					<i class="bi bi-chevron-down vc-chevron"></i>
+				</div>
+				<ul class="vc-subnav">
+					<li><a href="/vista/veterinarios">Listado de Veterinarios</a></li>
+				</ul>
+			</div>
+
+			<div class="vc-section">
+				<div class="vc-section-toggle">
+					<i class="bi bi-calendar2-week vc-icon-main"></i>
+					<span>Citas Médicas</span>
+					<i class="bi bi-chevron-down vc-chevron"></i>
+				</div>
+				<ul class="vc-subnav">
+					<li><a href="/nueva-cita">Programar Cita</a></li>
+					<li><a href="/vista/citas">Listado de Citas</a></li>
+				</ul>
+			</div>
+
+			<div class="vc-section">
+				<div class="vc-section-toggle">
+					<i class="bi bi-heart-pulse vc-icon-main"></i>
+					<span>Mascotas</span>
+					<i class="bi bi-chevron-down vc-chevron"></i>
+				</div>
+				<ul class="vc-subnav">
+					<li><a href="/vista/nueva-mascota">Registrar Mascota</a></li>
+					<li><a href="/vista/mascotas">Listado de Mascotas</a></li>
+				</ul>
+			</div>
+
+		</div>
+
+		<div class="vc-footer">
+			<div class="vc-avatar">
+				<i class="bi bi-person-fill"></i>
+			</div>
+			<div class="vc-footer-text">
+				<div class="vc-footer-name">Administrador General</div>
+				<div class="vc-footer-role">Administrador</div>
+			</div>
+			<i class="bi bi-box-arrow-right vc-footer-exit"></i>
+		</div>
+
+	</nav>
+	<!-- ===== FIN SIDEBAR ===== -->
+
+	<div class="vc-content">
+
+	<div class="container-fluid mt-4 mb-4">
+
+		<!-- Encabezado del módulo -->
+		<div class="d-flex justify-content-between align-items-center mb-4">
 
 		<div class="d-flex align-items-center">
 			<div class="icono-modulo me-3">
@@ -162,14 +334,17 @@
 
 	</div>
 
+	<!-- Mensaje informativo (opcional, viene del controller) -->
 	<div class="alert alert-info" th:if="${mensaje != null}">
 		<span th:text="${mensaje}"></span>
 	</div>
 
+	<!-- Tarjeta principal -->
 	<div class="card shadow-sm">
 
 		<div class="card-body">
 
+			<!-- Buscador -->
 			<div class="mb-3">
 				<div class="input-group">
 					<span class="input-group-text bg-white">
@@ -249,6 +424,7 @@
 
 						</tr>
 
+						<!-- Mensaje cuando no hay propietarios -->
 						<tr th:if="${#lists.isEmpty(codigo)}">
 							<td colspan="8" class="text-center text-muted py-4">
 								No hay propietarios registrados.
@@ -264,8 +440,13 @@
 		</div>
 	</div>
 
-</div>
+	</div>
 
+	</div><!-- /vc-content -->
+
+</div><!-- /vc-layout -->
+
+<!-- Modal: Editar Propietario -->
 <div class="modal fade" id="modalEditar" tabindex="-1">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
@@ -283,42 +464,42 @@
 
 					<div class="row">
 
-						<div class="col-md-4">
+						<div class="col-md-4 mb-3">
 							<label class="form-label">Código</label>
 							<input type="text" id="editCodigo" class="form-control" placeholder="Se asigna automáticamente" disabled>
 						</div>
 
-						<div class="col-md-4">
+						<div class="col-md-4 mb-3">
 							<label class="form-label">Nombres *</label>
-							<input type="text" id="editNombres" class="form-control" placeholder="Nombres" required>
+							<input type="text" id="editNombres" class="form-control" required>
 						</div>
 
-						<div class="col-md-4">
+						<div class="col-md-4 mb-3">
 							<label class="form-label">Apellidos *</label>
-							<input type="text" id="editApellidos" class="form-control" placeholder="Apellidos" required>
+							<input type="text" id="editApellidos" class="form-control" required>
 						</div>
 
-						<div class="col-md-6">
+						<div class="col-md-6 mb-3">
 							<label class="form-label">DNI *</label>
-							<input type="text" id="editDni" class="form-control" placeholder="Número de DNI" required>
+							<input type="text" id="editDni" class="form-control" required>
 						</div>
 
-						<div class="col-md-6">
+						<div class="col-md-6 mb-3">
 							<label class="form-label">Teléfono</label>
-							<input type="text" id="editTelefono" class="form-control" placeholder="Número de teléfono">
+							<input type="text" id="editTelefono" class="form-control">
 						</div>
 
-						<div class="col-md-12">
+						<div class="col-md-12 mb-3">
 							<label class="form-label">Correo Electrónico</label>
-							<input type="email" id="editCorreo" class="form-control" placeholder="correo@ejemplo.com">
+							<input type="email" id="editCorreo" class="form-control">
 						</div>
 
-						<div class="col-md-12">
+						<div class="col-md-12 mb-3">
 							<label class="form-label">Dirección</label>
-							<input type="text" id="editDireccion" class="form-control" placeholder="Dirección completa">
+							<input type="text" id="editDireccion" class="form-control">
 						</div>
 
-						<div class="col-md-6">
+						<div class="col-md-6 mb-3">
 							<label class="form-label">Estado</label>
 							<select id="editEstado" class="form-select">
 								<option value="ACTIVO">Activo</option>
@@ -345,6 +526,7 @@
 	</div>
 </div>
 
+<!-- Modal: Confirmar Eliminación -->
 <div class="modal fade" id="modalEliminar" tabindex="-1">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -379,11 +561,13 @@
 	</div>
 </div>
 
+<!-- jQuery (para el buscador simple) -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
 <script>
 	$(document).ready(function() {
 
+		// Buscador simple
 		$('#buscarPropietario').on('keyup', function() {
 			var valor = $(this).val().toLowerCase();
 			$('table tbody tr').filter(function() {
@@ -393,30 +577,29 @@
 
 		var modalEditar = new bootstrap.Modal(document.getElementById('modalEditar'));
 		var modalEliminar = new bootstrap.Modal(document.getElementById('modalEliminar'));
-		var modoFormulario = 'nuevo';
+		var modoFormulario = 'nuevo'; // 'nuevo' o 'editar'
 
 		function limpiarFormulario() {
 			$('#formEditar')[0].reset();
 			$('#editIdCliente').val('');
 			$('#editCodigo').val('');
-			$('#editCodigo').attr('placeholder', 'Se asigna automáticamente');
 			$('#editEstado').val('ACTIVO');
 		}
 
+		// Botón "Nuevo Propietario": limpiar formulario y ajustar título
 		$('#btnAbrirNuevo').on('click', function() {
 			modoFormulario = 'nuevo';
 			limpiarFormulario();
 			$('#tituloModalEditar').text('Registrar Propietario');
-			$('#btnGuardarEdicion').text('Registrar');
 		});
 
+		// Abrir modal de Editar con los datos de la fila
 		$(document).on('click', '.btn-abrir-editar', function() {
 
 			var btn = $(this);
 			modoFormulario = 'editar';
 
 			$('#tituloModalEditar').text('Editar Propietario');
-			$('#btnGuardarEdicion').text('Guardar Cambios');
 
 			$('#editIdCliente').val(btn.data('id'));
 			$('#editCodigo').val(btn.data('id'));
@@ -431,6 +614,7 @@
 			modalEditar.show();
 		});
 
+		// Guardar (POST si es nuevo, PUT si es edición)
 		$('#btnGuardarEdicion').on('click', function() {
 
 			if (!$('#editNombres').val() || !$('#editApellidos').val() || !$('#editDni').val()) {
@@ -474,6 +658,7 @@
 			});
 		});
 
+		// Abrir modal de Confirmar Eliminación
 		$(document).on('click', '.btn-abrir-eliminar', function() {
 
 			var btn = $(this);
@@ -484,6 +669,7 @@
 			modalEliminar.show();
 		});
 
+		// Confirmar eliminación (DELETE /clientes/{id})
 		$('#btnConfirmarEliminar').on('click', function() {
 
 			var id = $('#deleteIdCliente').val();
@@ -504,7 +690,18 @@
 	});
 </script>
 
+<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+		document.querySelectorAll('.vc-section-toggle').forEach(function(toggle) {
+			toggle.addEventListener('click', function() {
+				toggle.closest('.vc-section').classList.toggle('open');
+			});
+		});
+	});
+</script>
 
 </body>
 </html>

@@ -14,4 +14,6 @@ public interface UsuarioService {
 	void eliminar(Integer id);
 
 	Usuario buscar(Integer id);
+	
+	Usuario login(String usuario, String password);
 }
